@@ -1,0 +1,56 @@
+{
+  "project_info": {
+    "project_id": "erik-fitness",
+    "project_number": "1056878973272",
+    "name": "Erik Fitness"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1056878973272:android:6b8dcecb044d520b",
+        "client_id": "android:org.arthurweb.fitnessapp",
+        "client_type": 1,
+        "android_client_info": {
+          "package_name": "org.arthurweb.fitnessapp",
+          "certificate_hash": []
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1056878973272-9u804d3tse4pl91ad36cjreguv5n8k71.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "org.arthurweb.fitnessapp",
+            "certificate_hash": "78C191B5CE99AB0BF474E22D5CE8D6FD7D6C19E4"
+          }
+        },
+        {
+          "client_id": "1056878973272-sg47cmnba6fm4f2uhu6h1ejfvrncbadb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "cloud_messaging_service": {
+          "status": 1,
+          "apns_config": []
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "google_signin_service": {
+          "status": 2
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "client_info": [],
+  "ARTIFACT_VERSION": "1"
+}
