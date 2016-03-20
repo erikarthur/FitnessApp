@@ -5,11 +5,14 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.location.Location;
 import android.os.Bundle;
 
+import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.Semaphore;
+import java.util.concurrent.TimeUnit;
 
 
 /**
@@ -24,6 +27,7 @@ public class SessionManager extends IntentService {
     private static final int MAX_AVAILABLE = 1;
     private final Semaphore available = new Semaphore(MAX_AVAILABLE, true);
     private long startTime  = 0;
+    private Location oldLocation = null;
     private float metersToMPH = 2.236936f;
     private float metersToMiles = 0.000621371f;
 
@@ -43,19 +47,39 @@ public class SessionManager extends IntentService {
                 case Constants.gpsData:
                     if (intent.hasExtra(Constants.gpsDataValues)) {
                         try {
+
+                            Location location = (Location)intent.getParcelableExtra(Constants.gpsDataValues);
+
+                            if (oldLocation == null)
+                                oldLocation = location;
+
                             available.acquire();
-                            //Bundle data = intent.getExtras();
-                            _gpsValues = (gpsValues) intent.getParcelableExtra(Constants.gpsDataValues);
-                            _gpsValues.set_elapsedTime(_gpsValues.get_elapsedTime() - startTime);
-                            _gpsValues.set_speed(_gpsValues.get_speed() * metersToMPH);
-                            _gpsValues.set_distance(_gpsValues.get_distance() * metersToMiles);
+                            _gpsValues = new gpsValues();
+                            _gpsValues.set_elapsedTime(location.getTime() - startTime);
+                            _gpsValues.set_speed(location.getSpeed() * metersToMPH);
+                            _gpsValues.set_distance(location.distanceTo(oldLocation) * metersToMiles);
+                            _gpsValues.set_heading(location.getBearing());
+                            _gpsValues.set_lat(location.getLatitude());
+                            _gpsValues.set_lon(location.getLongitude());
+                            _gpsValues.set_pace(String.format(Locale.ENGLISH, "%02d:%02d:%02d",
+                                    TimeUnit.MILLISECONDS.toHours(location.getTime() - startTime),
+                                    TimeUnit.MILLISECONDS.toMinutes(_gpsValues.get_elapsedTime()) -
+                                            TimeUnit.MILLISECONDS.toHours(location.getTime() - startTime),
+                                    TimeUnit.MILLISECONDS.toSeconds(_gpsValues.get_elapsedTime()) -
+                                            (TimeUnit.MILLISECONDS.toHours(location.getTime() - startTime) +
+                                            TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(_gpsValues.get_elapsedTime())))
+                            );
+
                             available.release();
+
+                            oldLocation = location;
                         }
                         catch (Exception e) {
                             e.printStackTrace();
                         }
                     }
                     break;
+
                 case Constants.elevationData:
                     if (intent.hasExtra(Constants.elevationDataValue)) {
                         try {

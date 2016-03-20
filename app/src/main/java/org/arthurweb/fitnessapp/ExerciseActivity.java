@@ -36,6 +36,12 @@ public class ExerciseActivity extends AppCompatActivity {
 
                 TextView lon = (TextView) findViewById(R.id.lonValue);
                 lon.setText(String.format("%.3f", _gpsValues.get_lon()));
+
+                TextView elevation = (TextView) findViewById(R.id.elevationValue);
+                elevation.setText(String.format("%.0f", _gpsValues.get_elevation()));
+
+                TextView pace = (TextView) findViewById(R.id.paceValue);
+                pace.setText(_gpsValues.get_pace());
             }
 
         }

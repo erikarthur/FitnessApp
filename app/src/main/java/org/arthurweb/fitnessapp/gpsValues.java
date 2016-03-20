@@ -15,6 +15,7 @@ public class gpsValues implements Parcelable {
     private float _hrm = Float.MIN_VALUE;
     private float _distance = Float.MIN_VALUE;
     private long _elapsedTime = Long.MIN_VALUE;
+    private String _pace = null;
 
     public void set_lat (double lat) {
         _lat = lat;
@@ -64,6 +65,8 @@ public class gpsValues implements Parcelable {
     public void set_elapsedTime(long t) {_elapsedTime = t;}
     public long get_elapsedTime() {return _elapsedTime;}
 
+    public void set_pace (String p) { _pace = p;}
+    public String get_pace() {return _pace;}
 
     @Override
     public int describeContents() {
@@ -80,6 +83,7 @@ public class gpsValues implements Parcelable {
         dest.writeFloat(this._hrm);
         dest.writeFloat(this._distance);
         dest.writeLong(this._elapsedTime);
+        dest.writeString(this._pace);
     }
 
     public gpsValues() {
@@ -94,15 +98,14 @@ public class gpsValues implements Parcelable {
         this._hrm = in.readFloat();
         this._distance = in.readFloat();
         this._elapsedTime = in.readLong();
+        this._pace = in.readString();
     }
 
     public static final Creator<gpsValues> CREATOR = new Creator<gpsValues>() {
-        @Override
         public gpsValues createFromParcel(Parcel source) {
             return new gpsValues(source);
         }
 
-        @Override
         public gpsValues[] newArray(int size) {
             return new gpsValues[size];
         }

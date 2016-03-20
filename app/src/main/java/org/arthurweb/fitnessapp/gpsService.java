@@ -191,48 +191,9 @@ public class gpsService extends Service implements LocationListener,
     }
     @Override
     public void onLocationChanged(Location location) {
-        //Log.d(TAG, "Firing onLocationChanged..............................................");
-        if (oldLocation == null) {
-            oldLocation = location;
-        }
-        else {
-            oldLocation = mCurrentLocation;
-            distanceTravelled += location.distanceTo(oldLocation);
-        }
-        mCurrentLocation = location;
-        mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
-//        String msg = "New Latitude: " + location.getLatitude()
-//                + "  New Longitude: " + location.getLongitude();
-//        Log.d(TAG, msg);
 
         Intent gpsDataIntent = new Intent(Constants.gpsData);
-//        public gpsValues(double la, double lo, float he, float s, float e, float hr, float di, long t) {
-//            _lat = la;
-//            _lon = lo;
-//            _heading = he;
-//            _speed = s;
-//            _elevation = e;
-//            _hrm = hr;
-//            _distance = di;
-//            _elapsedTime = t;
-//        }
-
-//        gpsValues g = new gpsValues(location.getLatitude(), location.getLongitude(), location.getBearing(), location.getSpeed(),
-//                0.0f, 0.0f, distanceTravelled, location.getTime() - startTime);
-        gpsValues g = new gpsValues();
-        g.set_lat(location.getLatitude());
-        g.set_lon(location.getLongitude());
-        g.set_speed(location.getSpeed());
-        g.set_distance(distanceTravelled);
-        g.set_heading(location.getBearing());
-        g.set_elapsedTime(location.getTime());
-
-        gpsDataIntent.putExtra(Constants.gpsDataValues, g);
-//        gpsDataIntent.putExtra(Constants.gpsLat, location.getLatitude());
-//        gpsDataIntent.putExtra(Constants.gpsLon, location.getLongitude());
-//        gpsDataIntent.putExtra(Constants.gpsSpeed, location.getSpeed());
-//        gpsDataIntent.putExtra(Constants.gpsHeading, location.getBearing());
-//        gpsDataIntent.putExtra(Constants.distanceData, distanceTravelled);
+        gpsDataIntent.putExtra(Constants.gpsDataValues, location);
         sendBroadcast(gpsDataIntent);
 
     }
